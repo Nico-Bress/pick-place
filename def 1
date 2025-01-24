@@ -15,6 +15,7 @@
 #define EMERGENCY_SWITCH_PIN 2
 #define GO_BUTTON_PIN 3
 #define HOME_BUTTON_PIN 4
+#define STOP_BUTTON_PIN 5 // New pin for stop button
 
 // Motor configuration
 #define STEPS_PER_REV 200
@@ -61,6 +62,7 @@ void setup() {
   pinMode(EMERGENCY_SWITCH_PIN, INPUT_PULLUP);
   pinMode(GO_BUTTON_PIN, INPUT_PULLUP);
   pinMode(HOME_BUTTON_PIN, INPUT_PULLUP);
+  pinMode(STOP_BUTTON_PIN, INPUT_PULLUP); // Initialize stop button
 
   // Initialize valves
   pinMode(VACUUM_VALVE_PIN, OUTPUT);
@@ -99,6 +101,16 @@ void loop() {
       digitalWrite(LED_PIN, LOW);
       delay(100);
     }
+  }
+
+  // Check for stop button
+  if (digitalRead(STOP_BUTTON_PIN) == LOW) { 
+    SerialPort.println("Stopping and returning to home position...");
+    stepperMotor.setSpeed(0); // Stop the motor immediately
+    moveMotor(A); // Move to home position
+    controlVacuum(false);
+    controlCylinder(false);
+    currentPosition = A;
   }
 
   // Check if HOME button is pressed
@@ -141,6 +153,7 @@ void loop() {
     SerialPort.println("Pick & Place operation completed.");
   }
 }
+
 
 // Function to initialize ToF sensors
 void initToF(VL53L4CD &sensor, uint8_t xshutPin, uint8_t newAddress) {
