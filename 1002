@@ -1,0 +1,27 @@
+const int ledPin = 13;
+unsigned long previousMillis = 0;   // Memorizza il tempo dell'ultima accensione
+const long interval = 1000;          // Intervallo di lampeggio (1 secondo)
+
+void setup() {
+  pinMode(ledPin, OUTPUT);  
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+
+  // Se è passato il tempo dell'intervallo
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis; // Reset del timer
+
+    // Cambia lo stato del LED
+    int ledState = digitalRead(ledPin);
+    digitalWrite(ledPin, !ledState);
+  }
+
+  // Immagina che a metà programma accada qualcosa che voglia resettare il timer
+  if (someCondition) {
+    previousMillis = 0;  // Resetta il timer a 0 per ricominciare da capo
+  }
+
+  // Puoi continuare con altre operazioni
+}
