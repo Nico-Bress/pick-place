@@ -18,7 +18,7 @@
 #define STOP_BUTTON_PIN 5 // New pin for stop button
 #define STEP_PIN 3
 #define DIR_PIN 4
-#define ENABLE_PIN 5
+#define ENABLE_PIN 5   //da modificare, si sovrappone
 
 AccelStepper stepper(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
 
